@@ -59,8 +59,12 @@ class GradualWarmupScheduler(_LRScheduler):
     def step(self, epoch=None, metrics=None):
         if type(self.post_warmup_scheduler) != ReduceLROnPlateau:
             if self.finished and self.post_warmup_scheduler:
-                self.post_warmup_scheduler.step()
-                self._last_lr = self.post_warmup_scheduler.get_last_lr()
+                if self._step_count != 0:
+                    #when warmup_epochs is set to 0, the post scheduler must wait one step
+                    # otherwise you will lose the first lr value.
+                    self.post_warmup_scheduler.step()
+                    self._last_lr = self.post_warmup_scheduler.get_last_lr()
+                self._step_count += 1
             else:
                 return super(GradualWarmupScheduler, self).step()
         else:
