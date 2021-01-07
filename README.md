@@ -8,7 +8,7 @@ Example : Gradual Warmup for 100 epoch, after that, use cosine-annealing.
 ## Install
 
 ```
-$ pip install git+https://github.com/ildoonet/pytorch-gradual-warmup-lr.git
+$ pip install git+https://github.com/seo-95/pytorch-gradual-warmup-lr.git
 ```
 
 ## Usage
@@ -29,14 +29,14 @@ if __name__ == '__main__':
 
     # scheduler_warmup is chained with schduler_steplr
     scheduler_steplr = StepLR(optim, step_size=10, gamma=0.1)
-    scheduler_warmup = GradualWarmupScheduler(optim, multiplier=1, total_epoch=5, after_scheduler=scheduler_steplr)
+    scheduler_warmup = GradualWarmupScheduler(optim, multiplier=1, warmup_epochs=5, post_warmup_scheduler=scheduler_steplr)
 
     # this zero gradient update is needed to avoid a warning message, issue #8.
     optim.zero_grad()
     optim.step()
 
     for epoch in range(1, 20):
-        scheduler_warmup.step(epoch)
+        scheduler_warmup.step()
         print(epoch, optim.param_groups[0]['lr'])
 
         optim.step()    # backward pass (update network)
