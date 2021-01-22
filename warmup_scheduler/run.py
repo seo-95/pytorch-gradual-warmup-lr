@@ -26,6 +26,5 @@ if __name__ == '__main__':
     plt.plot(np.arange(1, len(lr_values)+1), lr_values, color='blue')
     plt.title('Learning rate trend')
     plt.xlabel('Steps')
-    plt.ylabel('LR')
     plt.savefig('lr.png')
     print('result saved in lr.png')
