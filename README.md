@@ -17,7 +17,7 @@ See [run.py](warmup_scheduler/run.py) file.
 
 ```python
 import torch
-from torch.optim.lr_scheduler import StepLR, ExponentialLR
+from torch.optim.lr_scheduler import MultiLR
 from torch.optim.sgd import SGD
 
 from warmup_scheduler import GradualWarmupScheduler
@@ -28,16 +28,12 @@ if __name__ == '__main__':
     optim = SGD(model, 0.1)
 
     # scheduler_warmup is chained with schduler_steplr
-    scheduler_steplr = StepLR(optim, step_size=10, gamma=0.1)
+    scheduler_steplr = MultiStepLR(optim, milestones=[200, 300], gamma=0.1)
     scheduler_warmup = GradualWarmupScheduler(optim, multiplier=1, warmup_epochs=5, post_warmup_scheduler=scheduler_steplr)
 
-    # this zero gradient update is needed to avoid a warning message, issue #8.
-    optim.zero_grad()
-    optim.step()
-
-    for epoch in range(1, 20):
-        scheduler_warmup.step()
-        print(epoch, optim.param_groups[0]['lr'])
-
-        optim.step()    # backward pass (update network)
+    for epoch in range(1, 10):
+        for step in range(1, 50):
+            optim.step()
+            scheduler_warmup.step()
+            print(epoch, optim.param_groups[0]['lr'])
 ```
