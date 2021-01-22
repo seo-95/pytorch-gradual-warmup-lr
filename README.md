@@ -28,8 +28,8 @@ if __name__ == '__main__':
     optim = SGD(model, 0.1)
 
     # scheduler_warmup is chained with schduler_steplr
-    scheduler_steplr = MultiStepLR(optim, milestones=[200, 300], gamma=0.1)
-    scheduler_warmup = GradualWarmupScheduler(optim, multiplier=1, warmup_epochs=5, post_warmup_scheduler=scheduler_steplr)
+    scheduler_steplr = MultiStepLR(optim, milestones=[300, 400], gamma=0.1)
+    scheduler_warmup = GradualWarmupScheduler(optim, multiplier=1, warmup_steps=200, post_warmup_scheduler=scheduler_steplr)
 
     for epoch in range(1, 10):
         for step in range(1, 50):
