@@ -2,7 +2,7 @@
 
 Gradually warm-up(increasing) learning rate for pytorch's optimizer. Proposed in 'Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour'.
 
-<img src="asset/lr_trend.png" alt="example tensorboard" width="300" height="whatever">
+<img src="asset/lr_trend.png" alt="example trend" width="300" height="whatever">
 Example : Gradual Warmup for 200 steps, after that, use MultiStepRL with milestones at 300 and 400.
 
 ## Install
