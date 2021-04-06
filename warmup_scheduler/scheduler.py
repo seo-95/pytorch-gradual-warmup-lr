@@ -38,3 +38,14 @@ class GradualWarmupScheduler(_LRScheduler):
             self.post_wup_scheduler.step()
             self._step_count    += 1
             self.last_epoch     += 1
+
+    def state_dict(self):
+        state_dict = super(GradualWarmupScheduler, self).state_dict()
+        state_dict['post_wup_scheduler'] = self.post_wup_scheduler.state_dict()
+        return state_dict
+
+    def load_state_dict(self, state_dict):
+        self.post_wup_scheduler.load_state_dict(state_dict['post_wup_scheduler'])
+        state_copy = state_dict.copy()
+        del state_copy['post_wup_scheduler']
+        super(GradualWarmupScheduler, self).load_state_dict(state_copy)
